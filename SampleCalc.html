@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Sample Calc by magnetrwn</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <style>
+    .calculator-table {
+      width: 460px;
+      padding: 15px 20px 60px 20px;
+    }
+    .calculator-table th {
+      color: white;
+      font-family: sans-serif;
+    }
+    .calculator-table:hover th {
+      transition: 0.2s;
+    }
+    .calculator-table input {
+      width: 98%;
+      font-size: 36px;
+      margin-bottom: 20px;
+      color: white;
+    }
+    .calculator-table button {
+      padding-top: 4px;
+      width: 24%;
+      height: 40px;
+      font-size: 20px;
+      color: white;
+    }
+    .calculator-table button:hover {
+      transform: scale(1.25, 1.4);
+      transition: 0.15s;
+    }
+    .calculator-table #equals {
+      width: 87.5%;
+      margin: 0 6.25% 0 6.25%;
+    }
+    .calculator-table line {
+      stroke: white;
+      stroke-width: 3px;
+      stroke-linecap: round;
+    }
+  </style>
+</head>
+
+<body onload="operation()">
+  <table class="calculator-table">
+    <tbody>
+      <tr><th style="font-size: 48px;">Sample Calc</th></tr>
+      <tr><th style="font-size: 16px;">by magnetrwn</th></tr>
+      <tr><td><br/></td></tr>
+      <tr><td><input id="textinput" type="text"></input></td></tr>
+      <div class="calculator-buttons">
+        <tr><td>
+          <button onclick='operation("plus")'>
+            <svg height="20" width="20">
+              <line x1="10" x2="10" y1="3" y2="17" />
+              <line x1="3" x2="17" y1="10" y2="10" />
+            </svg>
+          </button>
+          <button onclick='operation("minus")'>
+            <svg height="20" width="20">
+              <line x1="3" x2="17" y1="10" y2="10" />
+            </svg>
+          </button>
+          <button onclick='operation("multiply")'>
+            <svg height="20" width="20">
+              <line x1="3" x2="17" y1="3" y2="17" />
+              <line x1="3" x2="17" y1="17" y2="3" />
+            </svg>
+          </button>
+          <button onclick='operation("divide")'>
+            <svg height="20" width="20">
+              <line x1="3" x2="17" y1="10" y2="10" />
+              <line x1="10" x2="10" y1="3" y2="4" />
+              <line x1="10" x2="10" y1="16" y2="17" />
+            </svg>
+          </button>
+        </td></tr>
+        <tr><td>
+          <button onclick='operation("power")'>power</button>
+          <button onclick='operation("root")'>root</button>
+          <button onclick='operation("log")'>log</button>
+          <button onclick='operation("ln")'>ln</button>
+        </td></tr>
+        <tr><td>
+          <button onclick='operation("sine")'>sin</button>
+          <button onclick='operation("cosine")'>cos</button>
+          <button onclick='operation("tangent")'>tan</button>
+          <button onclick='operation("random")'>random</button>
+        </td></tr>
+        <tr><td>
+          <button id="equals" onclick='equals()'>
+            <svg height="20" width="20">
+              <line x1="3" x2="17" y1="7" y2="7" />
+              <line x1="3" x2="17" y1="14" y2="14" />
+            </svg>
+          </button>
+        </td></tr>
+      </div>
+    </tbody>
+  </table>
+  
+  <script>
+  
+  const colorHue = +Math.random()*360
+  const colorSaturation = 20 + +Math.random()*27
+  
+  const defaultBgColor = "hsl("+colorHue+","+(colorSaturation+16)+"%,37%)";
+  const defaultFgColor = "hsl("+colorHue+","+(colorSaturation+16)+"%,60%)";
+    
+  var colorShift = document.getElementsByClassName("calculator-table")[0];
+  colorShift.style.borderLeft = "8px solid hsl("+colorHue+","+(colorSaturation+16)+"%,60%)";
+  colorShift.style.borderTop = "8px solid hsl("+colorHue+","+(colorSaturation+16)+"%,60%)";
+  colorShift.style.borderBottom = "8px solid hsl("+(colorHue+2)+","+colorSaturation+"%,15%)";
+  colorShift.style.borderRight = "8px solid hsl("+(colorHue+2)+","+colorSaturation+"%,15%)";
+  colorShift.style.backgroundColor = "hsl("+(colorHue+1)+","+(colorSaturation+16)+"%,25%)";
+  
+  colorShift = document.getElementById("textinput");
+  colorShift.style.backgroundColor = "hsl("+colorHue+","+(colorSaturation+16)+"%,37%)";
+    
+  const buttons = document.getElementsByTagName("button");
+  var foregroundVariable = 0;
+  var backgroundVariable = 0;
+  var oldName = "";
+
+  function operation(name) {
+    for(var i=0; i<buttons.length; i++)
+      buttons[i].style.backgroundColor=defaultBgColor;
+      
+    switch(name) {
+      case "plus":
+        buttons[0].style.backgroundColor=defaultFgColor;
+        break;
+      case "minus":
+        buttons[1].style.backgroundColor=defaultFgColor;
+        break;
+      case "multiply":
+        buttons[2].style.backgroundColor=defaultFgColor;
+        break;
+      case "divide":
+        buttons[3].style.backgroundColor=defaultFgColor;
+        break;
+      case "power":
+        buttons[4].style.backgroundColor=defaultFgColor;
+        break;
+      case "root":
+        document.getElementById("textinput").value = (+document.getElementById("textinput").value)**0.5;
+        buttons[5].style.backgroundColor=defaultFgColor;
+        buttons[12].style.backgroundColor=defaultFgColor;
+        break;
+      case "log":
+        document.getElementById("textinput").value = Math.log(+document.getElementById("textinput").value)/Math.log(10);
+        buttons[6].style.backgroundColor=defaultFgColor;
+        buttons[12].style.backgroundColor=defaultFgColor;
+        break;
+      case "ln":
+        document.getElementById("textinput").value = Math.log(+document.getElementById("textinput").value);
+        buttons[7].style.backgroundColor=defaultFgColor;
+        buttons[12].style.backgroundColor=defaultFgColor;
+        break;
+      case "sine":
+        document.getElementById("textinput").value = Math.sin(+document.getElementById("textinput").value);
+        buttons[8].style.backgroundColor=defaultFgColor;
+        buttons[12].style.backgroundColor=defaultFgColor;
+        break;
+      case "cosine":
+        document.getElementById("textinput").value = Math.cos(+document.getElementById("textinput").value);
+        buttons[9].style.backgroundColor=defaultFgColor;
+        buttons[12].style.backgroundColor=defaultFgColor;
+        break;
+      case "tangent":
+        document.getElementById("textinput").value = Math.tan(+document.getElementById("textinput").value);
+        buttons[10].style.backgroundColor=defaultFgColor;
+        buttons[12].style.backgroundColor=defaultFgColor;
+        break;
+      case "random":
+        document.getElementById("textinput").value = Math.random();
+        buttons[11].style.backgroundColor=defaultFgColor;
+        buttons[12].style.backgroundColor=defaultFgColor;
+        break;
+      default:
+        break;
+    }
+      
+    foregroundVariable = document.getElementById("textinput").value;
+    switch(oldName) {
+      case "plus":
+        backgroundVariable = +backgroundVariable + +foregroundVariable;
+        break;
+      case "minus":
+        backgroundVariable = +backgroundVariable - +foregroundVariable;
+        break;
+      case "multiply":
+        backgroundVariable = +backgroundVariable * +foregroundVariable;
+        break;
+      case "divide":
+        backgroundVariable = +backgroundVariable / +foregroundVariable;
+        break;
+      case "power":
+        backgroundVariable = (+backgroundVariable) ** (+foregroundVariable);
+        break;
+      default:
+        backgroundVariable = +foregroundVariable;
+        break;
+    }
+    foregroundVariable = backgroundVariable;
+    document.getElementById("textinput").value = backgroundVariable;
+    oldName = name;
+  }
+
+  function equals() {
+    for(var i=0; i<buttons.length; i++)
+      buttons[i].style.backgroundColor=defaultBgColor;
+    
+    switch(oldName) {
+      case "plus":
+        document.getElementById("textinput").value = +foregroundVariable + +document.getElementById("textinput").value;
+        buttons[12].style.backgroundColor=defaultFgColor;
+        break;
+      case "minus":
+        document.getElementById("textinput").value = +foregroundVariable - +document.getElementById("textinput").value;
+        buttons[12].style.backgroundColor=defaultFgColor;
+        break;
+      case "multiply":
+        document.getElementById("textinput").value = +foregroundVariable * +document.getElementById("textinput").value;
+        buttons[12].style.backgroundColor=defaultFgColor;
+        break;
+      case "divide":
+        document.getElementById("textinput").value = +foregroundVariable / +document.getElementById("textinput").value;
+        buttons[12].style.backgroundColor=defaultFgColor;
+        break;
+      case "power":
+        document.getElementById("textinput").value = (+foregroundVariable)**(+document.getElementById("textinput").value);
+        buttons[12].style.backgroundColor=defaultFgColor;
+        break;
+      default:
+        buttons[12].style.backgroundColor=defaultBgColor;
+        break;
+    }
+    oldName = "";
+    backgroundVariable = 0;
+    foregroundVariable = 0;
+  }
+  
+  </script>
+  
+</body>
+
+</html>
